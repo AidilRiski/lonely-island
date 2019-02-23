@@ -8,7 +8,17 @@ class Main{
     public static void main(String args[]){
         Scanner inputStream = new Scanner(System.in);
         String fileName = inputStream.nextLine();
-        readFile(fileName);
+        if (!readFile(fileName)){
+            System.out.println("Something wrong happened while reading file.");
+        }else {
+            System.out.println("File is successfully read.");
+        }
+
+        for (int i = 0; i < kumpulanPulau.jumlahPulau; i++){
+            if (!kumpulanPulau.getPulau(i).isOutlier()){
+                kumpulanPulau.getPulau(i).printInfo();
+            }
+        }
 
         inputStream.close();
     }
@@ -42,9 +52,6 @@ class Main{
             if (bufferedReader.ready()){
                 String firstLine = sanitasiSpasi(bufferedReader.readLine());
 
-                bufferedReader.close();
-                fileReader.close();
-
                 int jumlahPulau = Integer.parseInt(firstLine.toString().split(" ")[0]);
                 int jumlahJembatan = Integer.parseInt(firstLine.toString().split(" ")[1]);
                 int indeksPulauPertama = Integer.parseInt(firstLine.toString().split(" ")[2]);
@@ -55,13 +62,30 @@ class Main{
 
                 isValid = indeksPulauPertama > 0 && indeksPulauPertama <= jumlahPulau;
 
-                if (isValid){
-                    kumpulanPulau = new KumpulanPulau(jumlahPulau);
-                    
+                if (!isValid){
+                    System.out.println("Indeks pulau mulai tidak valid!");
                 }else {
-                    System.out.println("File tidak valid!");
+                    kumpulanPulau = new KumpulanPulau(jumlahPulau);
+
+                    int linesRead = 0;
+                    String line = bufferedReader.readLine();
+                    while (linesRead < jumlahJembatan && line != null){
+                        line = sanitasiSpasi(line);
+                        int fromID = Integer.parseInt(line.split(" ")[0]) - 1;
+                        int toID = Integer.parseInt(line.split(" ")[1]) - 1;
+                        kumpulanPulau.getPulau(fromID).addConnectionToward(kumpulanPulau.getPulau(toID));
+                        linesRead++;
+                        line = bufferedReader.readLine();
+                    }
+
+                    isValid = linesRead == jumlahJembatan;
+                    if (!isValid){
+                        System.out.println("Jumlah jembatan tidak sesuai!");
+                    }
                 }
 
+                bufferedReader.close();
+                fileReader.close();
             }
         } catch (IOException _ioException){
             _ioException.printStackTrace();
