@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 class Main{
     public static KumpulanPulau kumpulanPulau;
+    public static long timer;
     public static void main(String args[]){
-        long timer = 0;
         Scanner inputStream = new Scanner(System.in);
 
         System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
@@ -19,27 +19,25 @@ class Main{
 
         System.out.print("Masukan nama file: ");
         String fileName = inputStream.nextLine();
-        if (!readFile(fileName)){
-            System.out.println("Something wrong happened while reading file.");
-        }else {
-            System.out.println("File is successfully read.");
-        }
+        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+        readFile(fileName);
 
-        timer = -System.currentTimeMillis();
-        List<Integer> lonelyIslands = KumpulanPulau.cariLoneIslands(kumpulanPulau);
-        timer += System.currentTimeMillis();
+        List<Integer> lonelyIslands = KumpulanPulau.cariLoneIslands(kumpulanPulau);        
 
         System.out.println("Kumpulan Lonely Islands:");
 
         if (lonelyIslands.size() > 0){
             for (int i = 0; i < lonelyIslands.size(); i++){
+                System.out.println("-------------------------------");
                 System.out.println("Pulau " + lonelyIslands.get(i));
             }
         }else {
             System.out.println("NONE");
         }
+        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
 
         System.out.println("Rekursi berjalan selama " + timer + "ms.");
+        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
 
         inputStream.close();
     }

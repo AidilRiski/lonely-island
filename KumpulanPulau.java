@@ -54,12 +54,16 @@ class KumpulanPulau{
                 "RecursiveThread",
                 52428800
             );
+            
+            Main.timer = -System.currentTimeMillis();
             recursionThread.start();
             try {
                 recursionThread.join();
+                Main.timer += System.currentTimeMillis();
             } catch (InterruptedException _interruptedException){
                 _interruptedException.printStackTrace();
             }
+
             loneIslandRecursion.printRoutes();
             return loneIslandRecursion.getLonelyIslands();
         }else {
@@ -91,14 +95,23 @@ class LoneIslandRecursion implements Runnable{
     }
 
     public void printRoutes(){
+        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+        System.out.println("Jalur menuju Lonely Islands:");
+        System.out.println("-------------------------------");
         for (int i = 0; i < listRute.size(); i++){
             for (int j = 0; j < listRute.get(i).size(); j++){
                 System.out.print(listRute.get(i).get(j));
                 if (j < listRute.get(i).size() - 1){
                     System.out.print("->");
+                }else {
+                    System.out.println("");
                 }
             }
-            System.out.println();
+            if (i < listRute.size() - 1){
+                System.out.println("-------------------------------");
+            }else {
+                System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+            }
         }
     }
 
