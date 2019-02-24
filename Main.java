@@ -1,12 +1,23 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 class Main{
     public static KumpulanPulau kumpulanPulau;
     public static void main(String args[]){
+        long timer = 0;
         Scanner inputStream = new Scanner(System.in);
+
+        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+        System.out.println("# Tugas Kecil 2               #");
+        System.out.println("# Strategi Algoritma - IF2211 #");
+        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+        System.out.println("# Aidil Rezjki S S - 13517070 #");
+        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+
+        System.out.print("Masukan nama file: ");
         String fileName = inputStream.nextLine();
         if (!readFile(fileName)){
             System.out.println("Something wrong happened while reading file.");
@@ -14,11 +25,21 @@ class Main{
             System.out.println("File is successfully read.");
         }
 
-        for (int i = 0; i < kumpulanPulau.jumlahPulau; i++){
-            if (!kumpulanPulau.getPulau(i).isOutlier()){
-                kumpulanPulau.getPulau(i).printInfo();
+        timer = -System.currentTimeMillis();
+        List<Pulau> lonelyIslands = KumpulanPulau.cariLoneIslands(kumpulanPulau);
+        timer += System.currentTimeMillis();
+
+        System.out.println("Kumpulan Lonely Islands:");
+
+        if (lonelyIslands.size() > 0){
+            for (int i = 0; i < lonelyIslands.size(); i++){
+                System.out.println("Pulau " + lonelyIslands.get(i).getIndeks());
             }
+        }else {
+            System.out.println("NONE");
         }
+
+        System.out.println("Rekursi berjalan selama " + timer + "ms.");
 
         inputStream.close();
     }
@@ -66,6 +87,7 @@ class Main{
                     System.out.println("Indeks pulau mulai tidak valid!");
                 }else {
                     kumpulanPulau = new KumpulanPulau(jumlahPulau);
+                    kumpulanPulau.setIndeksPulauPertama(indeksPulauPertama - 1);
 
                     int linesRead = 0;
                     String line = bufferedReader.readLine();

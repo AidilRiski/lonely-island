@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Pulau {
-    public List<Pulau> connectedTo;
-    public List<Pulau> connectedFrom;
-    public int indeks;
+    private List<Pulau> connectedTo;
+    private List<Pulau> connectedFrom;
+    private int indeks;
     
     public Pulau(int _indeks){
         connectedTo = new ArrayList<Pulau>();
@@ -22,8 +22,36 @@ class Pulau {
         connectedFrom.add(_pulauDari);
     }
 
+    public Pulau getConnectedToIsland(int _indeks){
+        return connectedTo.get(_indeks);
+    }
+
+    public Pulau getConnectedFromIsland(int _indeks){
+        return connectedFrom.get(_indeks);
+    }
+
+    public int getConnectedToSize(){
+        return connectedTo.size();
+    }
+
+    public int getConnectedFromSize(){
+        return connectedFrom.size();
+    }
+
+    public int getIndeks(){
+        return indeks;
+    }
+
     public boolean isOutlier(){
         return connectedFrom.isEmpty() && connectedTo.isEmpty();
+    }
+
+    public boolean isEdge(){
+        return connectedTo.isEmpty();
+    }
+
+    public boolean isEdgeReversed(){
+        return connectedFrom.isEmpty();
     }
 
     public void printInfo(){
