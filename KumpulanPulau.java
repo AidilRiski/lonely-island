@@ -1,5 +1,6 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.HashSet;
 
@@ -40,7 +41,7 @@ class KumpulanPulau{
         indeksPulauPertama = _indeksPulauPertama;
     }
 
-    public static List<Pulau> cariLoneIslands(KumpulanPulau _kumpulanPulau){
+    public static List<Integer> cariLoneIslands(KumpulanPulau _kumpulanPulau){
         if (_kumpulanPulau.getJumlahPulau() > 1){
             Boolean[] visitedIslands = new Boolean[_kumpulanPulau.getJumlahPulau()];
             for (int i = 0; i < visitedIslands.length; i++){
@@ -62,13 +63,13 @@ class KumpulanPulau{
             loneIslandRecursion.printRoutes();
             return loneIslandRecursion.getLonelyIslands();
         }else {
-            return _kumpulanPulau.getKumpulanPulau();
+            return Arrays.asList(_kumpulanPulau.getKumpulanPulau().get(0).getIndeks());
         }
     }
 }
 
 class LoneIslandRecursion implements Runnable{
-    private List<Pulau> loneIslands;
+    private List<Integer> loneIslands;
     private Pulau startIsland;
     private Boolean[] visitedIslands;
     private List<List<Integer>> listRute;
@@ -77,7 +78,7 @@ class LoneIslandRecursion implements Runnable{
     LoneIslandRecursion(Pulau _startIsland, Boolean[] _visitedIslands){
         startIsland = _startIsland;
         visitedIslands = _visitedIslands;
-        loneIslands = new ArrayList<Pulau>();
+        loneIslands = new ArrayList<Integer>();
         listRute = new ArrayList<List<Integer>>();
     }
 
@@ -85,7 +86,7 @@ class LoneIslandRecursion implements Runnable{
         loneIslands = new ArrayList<>(new HashSet<>(cariLoneIslandsRekursi(startIsland, visitedIslands, new ArrayList<Integer>())));
     }
     
-    public List<Pulau> getLonelyIslands(){
+    public List<Integer> getLonelyIslands(){
         return loneIslands;
     }
 
@@ -101,27 +102,32 @@ class LoneIslandRecursion implements Runnable{
         }
     }
 
-    private List<Pulau> cariLoneIslandsRekursi(Pulau _pulau, Boolean[] _visitedIslands, List<Integer> _currentRoute){
-        List<Integer> currentRoute = new ArrayList<Integer>(_currentRoute);
-        currentRoute.add(_pulau.getIndeks());
-        Boolean[] visitedIslands = _visitedIslands.clone();
-        visitedIslands[_pulau.getIndeks() - 1] = true;
+    private List<Integer> cariLoneIslandsRekursi(Pulau _pulau, Boolean[] _visitedIslands, List<Integer> _currentRoute){
+        _currentRoute.add(_pulau.getIndeks());
+        _visitedIslands[_pulau.getIndeks() - 1] = true;
         if (!_pulau.isEdge()){
-            List<Pulau> returnValue = new ArrayList<Pulau>();
+            List<Integer> returnValue = new ArrayList<Integer>();
             for (int i = 0; i < _pulau.getConnectedToSize(); i++){
                 if (!visitedIslands[_pulau.getConnectedToIsland(i).getIndeks() - 1]){
-                    returnValue.addAll(cariLoneIslandsRekursi(_pulau.getConnectedToIsland(i), visitedIslands, currentRoute));
+                    if (_pulau.getConnectedToSize() > 1){
+                        Boolean[] visitedIslands = _visitedIslands.clone();
+                        List<Integer> currentRoute = new ArrayList<Integer>(_currentRoute);
+                        returnValue.addAll(cariLoneIslandsRekursi(_pulau.getConnectedToIsland(i), visitedIslands, currentRoute));
+                    }else {
+                        returnValue.addAll(cariLoneIslandsRekursi(_pulau.getConnectedToIsland(i), _visitedIslands, _currentRoute));
+                    }
+                    
                 }
             }
             if (returnValue.isEmpty()){
-                returnValue.add(_pulau);
-                listRute.add(new ArrayList<Integer>(currentRoute));
+                returnValue.add(_pulau.getIndeks());
+                listRute.add(new ArrayList<Integer>(_currentRoute));
             }
             return returnValue;
         }else {
-            List<Pulau> returnValue = new ArrayList<Pulau>();
-            returnValue.add(_pulau);
-            listRute.add(new ArrayList<Integer>(currentRoute));
+            List<Integer> returnValue = new ArrayList<Integer>();
+            returnValue.add(_pulau.getIndeks());
+            listRute.add(new ArrayList<Integer>(_currentRoute));
             return returnValue;
         }
     }

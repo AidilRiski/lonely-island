@@ -26,14 +26,14 @@ class Main{
         }
 
         timer = -System.currentTimeMillis();
-        List<Pulau> lonelyIslands = KumpulanPulau.cariLoneIslands(kumpulanPulau);
+        List<Integer> lonelyIslands = KumpulanPulau.cariLoneIslands(kumpulanPulau);
         timer += System.currentTimeMillis();
 
         System.out.println("Kumpulan Lonely Islands:");
 
         if (lonelyIslands.size() > 0){
             for (int i = 0; i < lonelyIslands.size(); i++){
-                System.out.println("Pulau " + lonelyIslands.get(i).getIndeks());
+                System.out.println("Pulau " + lonelyIslands.get(i));
             }
         }else {
             System.out.println("NONE");
