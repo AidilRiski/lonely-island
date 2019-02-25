@@ -115,6 +115,7 @@ class LoneIslandRecursion implements Runnable{
         }
     }
 
+    //Algoritma Decrease and Conquer
     private List<Integer> cariLoneIslandsRekursi(Pulau _pulau, Boolean[] _visitedIslands, List<Integer> _currentRoute){
         _currentRoute.add(_pulau.getIndeks());
         _visitedIslands[_pulau.getIndeks() - 1] = true;

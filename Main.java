@@ -60,6 +60,7 @@ class Main{
         return _stringBuilder.toString();
     }
 
+    //Membaca File Eksternal
     private static boolean readFile(String fileName){
         boolean isValid = true;
         try {

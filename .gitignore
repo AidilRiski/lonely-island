@@ -1,2 +1,8 @@
 # ignore java compiled codes.
 *.class
+# ignore docs
+*.docx
+# ignore archives
+Tucil2StrAlgo-13517070/
+*.zip
+*.rar
